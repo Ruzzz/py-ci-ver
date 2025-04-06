@@ -1,0 +1,102 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist]
+only-include = ["ci_ver"]
+exclude = ["tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["ci_ver"]
+
+[tool.hatch.version]
+path = "ci_ver/__init__.py"
+
+[project]
+name = "ci-ver"
+dynamic = ["version"]
+authors = [
+    { name = "Ruslan Zaporojets", email = "ruzzzua@gmail.com" }
+]
+maintainers = [
+    { name = "Ruslan Zaporojets", email = "ruzzzua@gmail.com" }
+]
+description = "CI version utility for managing versioning in development branches"
+readme = "README.md"
+keywords = ["vcs", "version", "utilities"]
+license = {text = "MIT"}
+requires-python = ">=3.10"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development :: Version Control",
+    "Topic :: Utilities"
+]
+
+[dependency-groups]
+dev = [
+    "mypy ==1.15.0",
+    "pytest-cov ==6.1.0",
+    "pytest ==8.3.5",
+    "ruff ==0.11.*",
+]
+
+[project.urls]
+Homepage = "https://github.com/ruzzz/py-ci-ver"
+
+[project.scripts]
+ci-ver = "ci_ver:cli"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+
+[tool.ruff.format]
+quote-style = "single"
+docstring-code-format = true
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D",
+    "ANN001",
+    "ANN002",
+    "ANN003",
+    "ANN201",
+    "ANN204",
+    "COM812",
+    "EM101",
+    "EM102",
+    "TRY003",
+]
+flake8-quotes = { inline-quotes = "single", multiline-quotes = "double" }
+
+[tool.ruff.lint.per-file-ignores]
+"ci_ver/*" = ["T201"]
+"tests/*" = ["S101"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.pylint]
+max-args = 7
+
+[tool.coverage.run]
+branch = true
+source = ["ci_ver"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+precision = 2
+exclude_lines = [
+    "@overload",
+    "if __name__ == '__main__':",
+    "if TYPE_CHECKING:",
+    "pragma: no cover",
+    "raise NotImplementedError",
+]
